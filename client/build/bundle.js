@@ -19863,6 +19863,7 @@
 	var AccountsBox = __webpack_require__(163);
 	var AccountDisplay = __webpack_require__(166);
 	var Bank = __webpack_require__(1);
+	var AccountTypeSelect = __webpack_require__(167);
 	
 	var bank = new Bank();
 	var _iteratorNormalCompletion = true;
@@ -19934,6 +19935,7 @@
 	        bank.totalCash(),
 	        ' '
 	      ),
+	      React.createElement(AccountTypeSelect, { accounts: this.state.accounts }),
 	      React.createElement(AccountsBox, { accounts: bank.filteredAccounts('personal'), total: bank.totalCash('personal'), type: 'personal', onShowAccount: this.updateCurrentAccount, onDeleteAccount: this.deleteAccount }),
 	      React.createElement(AccountsBox, { accounts: bank.filteredAccounts('business'), total: bank.totalCash('business'), type: 'business', onShowAccount: this.updateCurrentAccount, onDeleteAccount: this.deleteAccount }),
 	      React.createElement(AccountDisplay, { account: this.state.currentAccount })
@@ -20099,6 +20101,48 @@
 	});
 	
 	module.exports = AccountDisplay;
+
+/***/ },
+/* 167 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var React = __webpack_require__(4);
+	
+	var AccountTypeSelect = React.createClass({
+	    displayName: 'AccountTypeSelect',
+	
+	
+	    filterTypes: function filterTypes(accounts) {
+	        var types = accounts.reduce(function (types, account) {
+	            if (!types.includes(account.type)) {
+	                types.push(account.type);
+	            }
+	            return types;
+	        }, ['All']);
+	        return types;
+	    },
+	
+	    render: function render() {
+	
+	        var createOption = function createOption(type) {
+	            return React.createElement(
+	                'option',
+	                { key: type, value: type },
+	                type
+	            );
+	        };
+	
+	        return React.createElement(
+	            'select',
+	            null,
+	            this.filterTypes(this.props.accounts).map(createOption)
+	        );
+	    }
+	});
+	
+	module.exports = AccountTypeSelect;
 
 /***/ }
 /******/ ]);

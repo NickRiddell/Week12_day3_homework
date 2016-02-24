@@ -3,6 +3,7 @@ var sampleAccounts = require('../sample.json');
 var AccountsBox = require('./AccountsBox.jsx');
 var AccountDisplay = require('./AccountDisplay.jsx');
 var Bank = require('../bank/bank.js');
+var AccountTypeSelect = require('./AccountTypeSelect.jsx')
 
 var bank = new Bank();
     for(var account of sampleAccounts){
@@ -34,6 +35,7 @@ var BankBox = React.createClass({
           <h1> React Bank Box </h1>
           <button onClick={this.handleInterestPayment}>Pay Interest</button>
           <h2> Total: £{ bank.totalCash() } </h2>
+          <AccountTypeSelect accounts={this.state.accounts}/>
           <AccountsBox accounts={bank.filteredAccounts('personal')} total={bank.totalCash('personal')} type='personal' onShowAccount={this.updateCurrentAccount} onDeleteAccount={this.deleteAccount}></AccountsBox>
           <AccountsBox accounts={bank.filteredAccounts('business')} total={bank.totalCash('business')} type='business' onShowAccount={this.updateCurrentAccount} onDeleteAccount={this.deleteAccount}></AccountsBox>
           <AccountDisplay account={this.state.currentAccount}></AccountDisplay>
