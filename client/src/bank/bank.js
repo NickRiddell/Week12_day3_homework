@@ -10,6 +10,12 @@ Bank.prototype = {
     var index = this.accounts.indexOf(account);
     this.accounts.splice(index, 1);
   },
+  payInterest:function(){
+    this.accounts.forEach(function(account){
+      var interest = Math.floor(account.amount * 0.1 * 100)/100;
+      account.amount += interest;
+    })
+  },
   findAccountByOwnerName:function(ownerName){
     var foundAccount = null;
     for (var account of this.accounts) {

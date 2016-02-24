@@ -57,4 +57,13 @@ describe('bank', function(){
     bank.deleteAccount(account1);
     assert.equal( 1, bank.accounts.length );
   });
+  it("should add 10% to all accounts", function(){
+    var bank = new Bank();
+    var account1 = new Account({owner:'Jay',amount:50, type:'business'});
+    var account2 = new Account({owner:'Val',amount:150, type:'business'});
+    bank.addAccount(account1);
+    bank.addAccount(account2);
+    bank.payInterest();
+    assert.equal( 165, account2.amount );
+  });
 })

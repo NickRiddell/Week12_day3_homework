@@ -107,6 +107,12 @@
 	    var index = this.accounts.indexOf(account);
 	    this.accounts.splice(index, 1);
 	  },
+	  payInterest: function payInterest() {
+	    this.accounts.forEach(function (account) {
+	      var interest = Math.floor(account.amount * 0.1 * 100) / 100;
+	      account.amount += interest;
+	    });
+	  },
 	  findAccountByOwnerName: function findAccountByOwnerName(ownerName) {
 	    var foundAccount = null;
 	    var _iteratorNormalCompletion = true;
