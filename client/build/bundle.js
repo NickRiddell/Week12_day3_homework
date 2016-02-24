@@ -201,7 +201,7 @@
 	      }
 	    }
 	
-	    return total;
+	    return Math.floor(total * 100) / 100;
 	  },
 	  accountAverage: function accountAverage() {
 	    return this.totalCash() / this.accounts.length;
@@ -19908,6 +19908,10 @@
 	    bank.deleteAccount(account);
 	    this.setState({ accounts: bank.accounts });
 	  },
+	  handleInterestPayment: function handleInterestPayment() {
+	    bank.payInterest();
+	    this.setState({ accounts: bank.accounts });
+	  },
 	
 	  render: function render() {
 	    return React.createElement(
@@ -19917,6 +19921,11 @@
 	        'h1',
 	        null,
 	        ' React Bank Box '
+	      ),
+	      React.createElement(
+	        'button',
+	        { onClick: this.handleInterestPayment },
+	        'Pay Interest'
 	      ),
 	      React.createElement(
 	        'h2',

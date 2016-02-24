@@ -39,7 +39,7 @@ Bank.prototype = {
     for (var account of this.filteredAccounts(type)) {
       total += account.amount;
     }
-    return total;
+    return Math.floor(total *100)/100;
   },
   accountAverage:function(){
     return this.totalCash()/this.accounts.length;

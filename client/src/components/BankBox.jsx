@@ -23,11 +23,16 @@ var BankBox = React.createClass({
     bank.deleteAccount(account);
     this.setState({accounts: bank.accounts});
   },
+  handleInterestPayment:function(){
+    bank.payInterest();
+    this.setState({accounts: bank.accounts});
+  },
 
   render:function(){
     return(
         <div>
           <h1> React Bank Box </h1>
+          <button onClick={this.handleInterestPayment}>Pay Interest</button>
           <h2> Total: £{ bank.totalCash() } </h2>
           <AccountsBox accounts={bank.filteredAccounts('personal')} total={bank.totalCash('personal')} type='personal' onShowAccount={this.updateCurrentAccount} onDeleteAccount={this.deleteAccount}></AccountsBox>
           <AccountsBox accounts={bank.filteredAccounts('business')} total={bank.totalCash('business')} type='business' onShowAccount={this.updateCurrentAccount} onDeleteAccount={this.deleteAccount}></AccountsBox>
