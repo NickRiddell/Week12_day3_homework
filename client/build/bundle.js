@@ -19897,9 +19897,9 @@
 	  displayName: 'BankBox',
 	
 	  getInitialState: function getInitialState() {
-	    return { accounts: bank.accounts, currentAccount: null };
+	    return { accounts: bank.accounts, currentAccount: null, currentType: null };
 	  },
-	  updateCurrentAccount: function updateCurrentAccount(account) {
+	  setCurrentAccount: function setCurrentAccount(account) {
 	    this.setState({ currentAccount: account });
 	  },
 	  deleteAccount: function deleteAccount(account) {
@@ -19914,7 +19914,23 @@
 	    this.setState({ accounts: bank.accounts });
 	  },
 	
+	  setCurrentType: function setCurrentType(type) {
+	    if (type === 'All') type = null;
+	    this.setState({ currentType: type });
+	  },
+	
 	  render: function render() {
+	
+	    var totalDisplay;
+	    if (this.state.currentType !== null) {
+	      totalDisplay = React.createElement(
+	        'h2',
+	        null,
+	        ' Total: £',
+	        bank.totalCash(),
+	        ' '
+	      );
+	    }
 	    return React.createElement(
 	      'div',
 	      null,
@@ -19923,21 +19939,14 @@
 	        null,
 	        ' React Bank Box '
 	      ),
+	      totalDisplay,
 	      React.createElement(
 	        'button',
 	        { onClick: this.handleInterestPayment },
 	        'Pay Interest'
 	      ),
-	      React.createElement(
-	        'h2',
-	        null,
-	        ' Total: £',
-	        bank.totalCash(),
-	        ' '
-	      ),
-	      React.createElement(AccountTypeSelect, { accounts: this.state.accounts }),
-	      React.createElement(AccountsBox, { accounts: bank.filteredAccounts('personal'), total: bank.totalCash('personal'), type: 'personal', onShowAccount: this.updateCurrentAccount, onDeleteAccount: this.deleteAccount }),
-	      React.createElement(AccountsBox, { accounts: bank.filteredAccounts('business'), total: bank.totalCash('business'), type: 'business', onShowAccount: this.updateCurrentAccount, onDeleteAccount: this.deleteAccount }),
+	      React.createElement(AccountTypeSelect, { accounts: this.state.accounts, onTypeSelect: this.setCurrentType }),
+	      React.createElement(AccountsBox, { accounts: bank.filteredAccounts(this.state.currentType), total: bank.totalCash(this.state.currentType), type: this.state.currentType, onShowAccount: this.setCurrentAccount, onDeleteAccount: this.deleteAccount }),
 	      React.createElement(AccountDisplay, { account: this.state.currentAccount })
 	    );
 	  }
@@ -20124,6 +20133,11 @@
 	        return types;
 	    },
 	
+	    handleSelect: function handleSelect(e) {
+	        var type = e.target.value;
+	        this.props.onTypeSelect(type);
+	    },
+	
 	    render: function render() {
 	
 	        var createOption = function createOption(type) {
@@ -20135,9 +20149,18 @@
 	        };
 	
 	        return React.createElement(
-	            'select',
+	            'div',
 	            null,
-	            this.filterTypes(this.props.accounts).map(createOption)
+	            React.createElement(
+	                'h4',
+	                null,
+	                ' Select Account Type'
+	            ),
+	            React.createElement(
+	                'select',
+	                { onChange: this.handleSelect },
+	                this.filterTypes(this.props.accounts).map(createOption)
+	            )
 	        );
 	    }
 	});

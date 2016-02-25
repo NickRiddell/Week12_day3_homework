@@ -12,9 +12,9 @@ var bank = new Bank();
 
 var BankBox = React.createClass({
   getInitialState:function(){
-    return {accounts: bank.accounts, currentAccount: null}
+    return {accounts: bank.accounts, currentAccount: null, currentType: null}
   },
-  updateCurrentAccount: function(account){
+  setCurrentAccount: function(account){
     this.setState( { currentAccount: account } );
   },
   deleteAccount: function(account){
@@ -29,15 +29,26 @@ var BankBox = React.createClass({
     this.setState({accounts: bank.accounts});
   },
 
+  setCurrentType:function(type){
+    if (type === 'All') type = null;
+    this.setState({currentType: type});
+  },
+
   render:function(){
+
+    var totalDisplay;
+    if (this.state.currentType !== null) {
+        totalDisplay = <h2> Total: £{ bank.totalCash() } </h2>
+    }
     return(
         <div>
           <h1> React Bank Box </h1>
+
+          {totalDisplay}
+
           <button onClick={this.handleInterestPayment}>Pay Interest</button>
-          <h2> Total: £{ bank.totalCash() } </h2>
-          <AccountTypeSelect accounts={this.state.accounts}/>
-          <AccountsBox accounts={bank.filteredAccounts('personal')} total={bank.totalCash('personal')} type='personal' onShowAccount={this.updateCurrentAccount} onDeleteAccount={this.deleteAccount}></AccountsBox>
-          <AccountsBox accounts={bank.filteredAccounts('business')} total={bank.totalCash('business')} type='business' onShowAccount={this.updateCurrentAccount} onDeleteAccount={this.deleteAccount}></AccountsBox>
+          <AccountTypeSelect accounts={this.state.accounts} onTypeSelect={this.setCurrentType}/>
+          <AccountsBox accounts={bank.filteredAccounts(this.state.currentType)} total={bank.totalCash(this.state.currentType)} type={this.state.currentType} onShowAccount={this.setCurrentAccount} onDeleteAccount={this.deleteAccount}></AccountsBox>
           <AccountDisplay account={this.state.currentAccount}></AccountDisplay>
         </div>
     )

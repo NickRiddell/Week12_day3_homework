@@ -12,6 +12,11 @@ var AccountTypeSelect = React.createClass({
         return types;
     },
 
+    handleSelect:function(e){
+        var type = e.target.value;
+        this.props.onTypeSelect(type);
+    },
+
     render:function(){
 
         var createOption = function(type){
@@ -19,9 +24,12 @@ var AccountTypeSelect = React.createClass({
         }
 
         return(
-            <select>
-                {this.filterTypes(this.props.accounts).map(createOption)}
-            </select>
+            <div>
+                <h4> Select Account Type</h4>
+                    <select onChange={this.handleSelect}>
+                        {this.filterTypes(this.props.accounts).map(createOption)}
+                    </select>
+            </div>
         )
     }
 })
